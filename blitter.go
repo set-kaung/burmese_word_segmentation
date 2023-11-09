@@ -51,6 +51,16 @@ func Splitter(sentence string) (map[string][]int, int) {
 
 }
 
+func CreateWordsSlice(m map[string][]int, max int) []string {
+	sl := make([]string, max, max)
+	for k, v := range m {
+		for _, i := range v {
+			sl[i] = k
+		}
+	}
+	return sl
+}
+
 func insertIntoMapSlice(word string, index int, words map[string][]int) map[string][]int {
 	if s, ok := words[word]; ok {
 		s = append(s, index)
