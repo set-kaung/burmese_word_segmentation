@@ -144,7 +144,7 @@ func splitIntoWords(diacritics_map map[rune]string, words map[string][]int, sRun
 		//and the next rune is not a diacritics
 		//or if the current rune is the last one
 		//we do the following
-		if _, ok := diacritics_map[nextRune]; !ok || nextRune == r {
+		if _, ok := diacritics_map[nextRune]; !ok && r != VIRAMA || nextRune == r {
 			//again checking for something like နတ်
 			if i+2 <= len(sRunes)-1 {
 				if sRunes[i+2] == ASAT || sRunes[i+2] == DOT_BELOW {

@@ -7,7 +7,7 @@ import (
 )
 
 func TestSplitIntoWords(t *testing.T) {
-	sentence := "စိုက်ပျိုးရေး၊မွေးမြူရေးနှင့်ဆည်မြောင်းဝန်ကြီးဌာန"
+	sentence := "ခေတ်အလိုက်ပြဋ္ဌာန်းပြီးဥပဒေများ"
 	blitter.Splitter(sentence)
 	sentence = "နတ်"
 	sl := blitter.CreateWordsSlice(blitter.Splitter(sentence))
