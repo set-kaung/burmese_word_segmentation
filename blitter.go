@@ -77,7 +77,7 @@ func splitIntoWords(diacritics_map map[rune]string, words map[string][]int, sRun
 	var nextRune rune
 	for i := 0; i < len(sRunes); i++ {
 		r := sRunes[i]
-		if r == '။' {
+		if r == '။' || r == '၊' {
 			builder.WriteRune(r)
 			word := builder.String()
 			words = insertIntoMapSlice(word, index, words)
@@ -92,7 +92,7 @@ func splitIntoWords(diacritics_map map[rune]string, words map[string][]int, sRun
 		//this is current rune is the last one
 		if i != len(sRunes)-1 {
 			nextRune = sRunes[i+1]
-			if nextRune == '။' {
+			if nextRune == '။' || nextRune == '၊' {
 				builder.WriteRune(r)
 				word := builder.String()
 				words = insertIntoMapSlice(word, index, words)
@@ -114,11 +114,18 @@ func splitIntoWords(diacritics_map map[rune]string, words map[string][]int, sRun
 						//we check if the next rune is
 						//something like တ်
 						//if it is, then current word in the buffer is
-						//something like နတ်
+						//something like န(တ်)
 						n2 := sRunes[i+2]
 						if n2 == ASAT || n2 == DOT_BELOW {
 							continue
 						}
+						word := builder.String()
+						insertIntoMapSlice(word, index, words)
+						index++
+						builder.Reset()
+						continue
+
+					} else if r == AA { //checking for 'ာ'
 						word := builder.String()
 						insertIntoMapSlice(word, index, words)
 						index++
@@ -129,7 +136,7 @@ func splitIntoWords(diacritics_map map[rune]string, words map[string][]int, sRun
 			}
 		}
 		// if all above procedures isn't executed
-		//we can safe to assume that current rune
+		//we can safely assume that current rune
 		//is part of a word
 		builder.WriteRune(r)
 
@@ -137,7 +144,7 @@ func splitIntoWords(diacritics_map map[rune]string, words map[string][]int, sRun
 		//and the next rune is not a diacritics
 		//or if the current rune is the last one
 		//we do the following
-		if _, ok := diacritics_map[nextRune]; !ok && r != VIRAMA || nextRune == r {
+		if _, ok := diacritics_map[nextRune]; !ok || nextRune == r {
 			//again checking for something like နတ်
 			if i+2 <= len(sRunes)-1 {
 				if sRunes[i+2] == ASAT || sRunes[i+2] == DOT_BELOW {
