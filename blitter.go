@@ -4,55 +4,56 @@ import "strings"
 
 const (
 	TALL_AA   rune = 'ါ'
-	AA             = 'ာ'
-	I              = 'ိ'
-	II             = 'ီ'
-	U              = 'ု'
-	UU             = 'ူ'
-	E              = 'ေ'
-	AI             = 'ဲ'
-	ANUSVARA       = 'ံ'
-	DOT_BELOW      = '့'
-	VISARGA        = 'း'
-	VIRAMA         = '္'
-	ASAT           = '်'
-	MEDIAL_YA      = 'ျ'
-	MEDIAL_RA      = 'ြ'
-	MEDIAL_WA      = 'ွ'
-	MEDIAL_HA      = 'ှ'
+	AA        rune = 'ာ'
+	I         rune = 'ိ'
+	II        rune = 'ီ'
+	U         rune = 'ု'
+	UU        rune = 'ူ'
+	E         rune = 'ေ'
+	AI        rune = 'ဲ'
+	ANUSVARA  rune = 'ံ'
+	DOT_BELOW rune = '့'
+	VISARGA   rune = 'း'
+	VIRAMA    rune = '္'
+	ASAT      rune = '်'
+	MEDIAL_YA rune = 'ျ'
+	MEDIAL_RA rune = 'ြ'
+	MEDIAL_WA rune = 'ွ'
+	MEDIAL_HA rune = 'ှ'
 )
 
 // Splitter returns the words of a sentence in a map
 // with a slice of indices where the words occur
 // in the sentece and also returns the amount of words.
 func Splitter(sentence string) (map[string][]int, int) {
-	diacritics_map := make(map[rune]string, 17)
-	diacritics_map['ံ'] = "ANUSVARA"
-	diacritics_map['္'] = "VIRAMA"
-	diacritics_map['ျ'] = "MEDIAL_YA"
-	diacritics_map['ှ'] = "MEDIAL_HA"
-	diacritics_map['ူ'] = "UU"
-	diacritics_map['ဲ'] = "AI"
-	diacritics_map['်'] = "ASAT"
-	diacritics_map['ြ'] = "MEDIAL_RA"
-	diacritics_map['့'] = "DOT_BELOW"
-	diacritics_map['း'] = "VISARGA"
-	diacritics_map['ွ'] = "MEDIAL_WA"
-	diacritics_map['ါ'] = "TALL_AA"
-	diacritics_map['ာ'] = "AA"
-	diacritics_map['ိ'] = "I"
-	diacritics_map['ီ'] = "II"
-	diacritics_map['ု'] = "U"
-	diacritics_map['ေ'] = "E"
+	diacriticsMap := make(map[rune]string, 17)
+	diacriticsMap['ံ'] = "ANUSVARA"
+	diacriticsMap['္'] = "VIRAMA"
+	diacriticsMap['ျ'] = "MEDIAL_YA"
+	diacriticsMap['ှ'] = "MEDIAL_HA"
+	diacriticsMap['ူ'] = "UU"
+	diacriticsMap['ဲ'] = "AI"
+	diacriticsMap['်'] = "ASAT"
+	diacriticsMap['ြ'] = "MEDIAL_RA"
+	diacriticsMap['့'] = "DOT_BELOW"
+	diacriticsMap['း'] = "VISARGA"
+	diacriticsMap['ွ'] = "MEDIAL_WA"
+	diacriticsMap['ါ'] = "TALL_AA"
+	diacriticsMap['ာ'] = "AA"
+	diacriticsMap['ိ'] = "I"
+	diacriticsMap['ီ'] = "II"
+	diacriticsMap['ု'] = "U"
+	diacriticsMap['ေ'] = "E"
 
 	words := make(map[string][]int)
 	sRunes := []rune(sentence)
-	return splitIntoWords(diacritics_map, words, sRunes)
-
+	return splitIntoWords(diacriticsMap, words, sRunes)
 }
 
+// CreateWorsSlice help create slice of words from map
+// created by Splitter
 func CreateWordsSlice(m map[string][]int, max int) []string {
-	sl := make([]string, max, max)
+	sl := make([]string, max)
 	for k, v := range m {
 		for _, i := range v {
 			sl[i] = k
@@ -61,6 +62,7 @@ func CreateWordsSlice(m map[string][]int, max int) []string {
 	return sl
 }
 
+// helper function
 func insertIntoMapSlice(word string, index int, words map[string][]int) map[string][]int {
 	if s, ok := words[word]; ok {
 		s = append(s, index)
@@ -71,12 +73,15 @@ func insertIntoMapSlice(word string, index int, words map[string][]int) map[stri
 	return words
 }
 
-func splitIntoWords(diacritics_map map[rune]string, words map[string][]int, sRunes []rune) (map[string][]int, int) {
+// splitting a burmese sentence into each word
+func splitIntoWords(diacriticsMap map[rune]string, words map[string][]int, sRunes []rune) (map[string][]int, int) {
 	index := 0
 	builder := strings.Builder{}
 	var nextRune rune
 	for i := 0; i < len(sRunes); i++ {
 		r := sRunes[i]
+
+		//checking if end
 		if r == '။' || r == '၊' {
 			builder.WriteRune(r)
 			word := builder.String()
@@ -104,11 +109,11 @@ func splitIntoWords(diacritics_map map[rune]string, words map[string][]int, sRun
 		} else {
 			nextRune = r
 		}
-		if _, ok := diacritics_map[r]; ok {
+		if _, ok := diacriticsMap[r]; ok {
 			//we skipping checking if next rune is diacritic
 			//if currnent rune is ္
 			if r != VIRAMA {
-				if _, ok = diacritics_map[nextRune]; !ok {
+				if _, ok = diacriticsMap[nextRune]; !ok {
 					builder.WriteRune(r)
 					if i+2 <= len(sRunes)-1 {
 						//we check if the next rune is
@@ -125,7 +130,7 @@ func splitIntoWords(diacritics_map map[rune]string, words map[string][]int, sRun
 						builder.Reset()
 						continue
 
-					} else if r == AA { //checking for 'ာ'
+					} else {
 						word := builder.String()
 						insertIntoMapSlice(word, index, words)
 						index++
@@ -144,7 +149,7 @@ func splitIntoWords(diacritics_map map[rune]string, words map[string][]int, sRun
 		//and the next rune is not a diacritics
 		//or if the current rune is the last one
 		//we do the following
-		if _, ok := diacritics_map[nextRune]; !ok && r != VIRAMA || nextRune == r {
+		if _, ok := diacriticsMap[nextRune]; !ok && r != VIRAMA || nextRune == r {
 			//again checking for something like နတ်
 			if i+2 <= len(sRunes)-1 {
 				if sRunes[i+2] == ASAT || sRunes[i+2] == DOT_BELOW {
