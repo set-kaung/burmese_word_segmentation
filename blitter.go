@@ -81,6 +81,10 @@ func splitIntoWords(diacriticsMap map[rune]string, words map[string][]int, sRune
 	for i := 0; i < len(sRunes); i++ {
 		r := sRunes[i]
 
+		if r == '\r' || r == ' ' || r == '\n' {
+			continue
+		}
+
 		//checking if end
 		if r == '။' || r == '၊' {
 			builder.WriteRune(r)
