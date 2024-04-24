@@ -23,7 +23,7 @@ func TestSplitIntoWords(t *testing.T) {
 	}{
 		{sentence: "လက္ခဏ", want: []string{"လ", "က္ခ", "ဏ"}},
 		{sentence: "ဆေးရုံ", want: []string{"ဆေး", "ရုံ"}},
-		{sentence: "အနောက်တိုင်းဆေး", want: []string{"အ", "နောက်", "တိုင်း", "ဆေး"}},
+		{sentence: "အနောက်တိုင်းဆေး ", want: []string{"အ", "နောက်", "တိုင်း", "ဆေး"}},
 		{sentence: "စမ်းသပ်၊စစ်ဆေးချက်များ", want: []string{"စမ်း", "သပ်", "၊", "စစ်", "ဆေး", "ချက်", "များ"}},
 		{sentence: "ရောဂါကိုရှာဖွေရသည်။", want: []string{"ရော", "ဂါ", "ကို", "ရှာ", "ဖွေ", "ရ", "သည်", "။"}},
 		{sentence: "ကုသ", want: []string{"ကု", "သ"}},
