@@ -16,7 +16,7 @@ func checkIfSliceEqual(sl1, sl2 []string) bool {
 	return true
 }
 
-func TestTokenizer(t *testing.T) {
+func TestSegmentWords(t *testing.T) {
 	tests := []struct {
 		sentence string
 		want     []string
@@ -41,7 +41,7 @@ func TestTokenizer(t *testing.T) {
 	}
 }
 
-func BenchmarkTokenizer(b *testing.B) {
+func BenchmarkSegmentWords(b *testing.B) {
 	tests := []struct {
 		sentence string
 		want     []string

@@ -22,24 +22,13 @@ const (
 	MEDIAL_HA rune = 'ှ'
 )
 
-var diacriticsMap = map[rune]struct{}{
-	ANUSVARA:  {},
-	VIRAMA:    {},
-	MEDIAL_YA: {},
-	MEDIAL_HA: {},
-	UU:        {},
-	AI:        {},
-	ASAT:      {},
-	MEDIAL_RA: {},
-	DOT_BELOW: {},
-	VISARGA:   {},
-	MEDIAL_WA: {},
-	TALL_AA:   {},
-	AA:        {},
-	I:         {},
-	II:        {},
-	U:         {},
-	E:         {},
+func isDiacritic(r rune) bool {
+	switch r {
+	case ANUSVARA, VIRAMA, MEDIAL_YA, MEDIAL_HA, UU, AI, ASAT,
+		MEDIAL_RA, DOT_BELOW, VISARGA, MEDIAL_WA, TALL_AA, AA, I, II, U, E:
+		return true
+	}
+	return false
 }
 
 // Tokenize returns the words of a sentence in a map
@@ -97,11 +86,11 @@ func segment(sRunes []rune) (words []string, err error) {
 		} else {
 			nextRune = r
 		}
-		if _, ok := diacriticsMap[r]; ok {
+		if isDiacritic(r) {
 			//we skipping checking if next rune is diacritic
 			//if currnent rune is ္
 			if r != VIRAMA {
-				if _, ok = diacriticsMap[nextRune]; !ok {
+				if !isDiacritic(nextRune) {
 					_, err = builder.WriteRune(r)
 					if err != nil {
 						return nil, err
@@ -143,10 +132,12 @@ func segment(sRunes []rune) (words []string, err error) {
 		//and the next rune is not a diacritics
 		//or if the current rune is the last one
 		//we do the following
-		if _, ok := diacriticsMap[nextRune]; !ok && r != VIRAMA || nextRune == r {
-			//again checking for something like နတ်
+		switch {
+		case (r != VIRAMA && !isDiacritic(nextRune)) || nextRune == r:
+			// Again checking for something like နတ်
 			if i+2 <= len(sRunes)-1 {
-				if sRunes[i+2] == ASAT || sRunes[i+2] == DOT_BELOW {
+				switch sRunes[i+2] {
+				case ASAT, DOT_BELOW:
 					continue
 				}
 			}
