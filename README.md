@@ -3,4 +3,4 @@ This is a part of a larger effort to provide Burmese NLP tools. A syllable-based
 It is performant and well tested. I intend to add Benchmark statistics later.
 
 # Todo
-[] Add Benchmark Stats
+- [ ] Add Benchmark Stats
