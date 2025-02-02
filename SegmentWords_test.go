@@ -31,7 +31,7 @@ func TestTokenizer(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		got, err := Tokenize(tt.sentence)
+		got, err := SegmentWords(tt.sentence)
 		if err != nil {
 			t.Errorf("test failed: %v", err)
 		}
@@ -56,7 +56,7 @@ func BenchmarkTokenizer(b *testing.B) {
 	}
 	for i := 0; i <= b.N; i++ {
 		for _, tt := range tests {
-			Tokenize(tt.sentence)
+			SegmentWords(tt.sentence)
 		}
 	}
 }

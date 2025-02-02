@@ -45,13 +45,13 @@ var diacriticsMap = map[rune]struct{}{
 // Tokenize returns the words of a sentence in a map
 // with a slice of indices where the words occur
 // in the sentece and also returns the amount of words.
-func Tokenize(sentence string) ([]string, error) {
+func SegmentWords(sentence string) ([]string, error) {
 	sRunes := []rune(sentence)
-	return tokenize(sRunes)
+	return segment(sRunes)
 }
 
 // splitting a burmese sentence into each word
-func tokenize(sRunes []rune) (words []string, err error) {
+func segment(sRunes []rune) (words []string, err error) {
 	words = make([]string, 0, len(sRunes))
 	index := 0
 	builder := strings.Builder{}
