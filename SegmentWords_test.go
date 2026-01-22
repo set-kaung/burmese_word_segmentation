@@ -31,7 +31,7 @@ func TestSegmentWords(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		got, err := SegmentWords(tt.sentence)
+		got, err := SegmentSyllables(tt.sentence)
 		if err != nil {
 			t.Errorf("test failed: %v", err)
 		}
@@ -56,7 +56,7 @@ func BenchmarkSegmentWords(b *testing.B) {
 	}
 	for i := 0; i <= b.N; i++ {
 		for _, tt := range tests {
-			SegmentWords(tt.sentence)
+			SegmentSyllables(tt.sentence)
 		}
 	}
 }

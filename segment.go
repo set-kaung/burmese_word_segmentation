@@ -31,15 +31,14 @@ func isDiacritic(r rune) bool {
 	return false
 }
 
-// Tokenize returns the words of a sentence in a map
-// with a slice of indices where the words occur
-// in the sentece and also returns the amount of words.
-func SegmentWords(sentence string) ([]string, error) {
+// Segment returns the Burmese syllables of a sentence
+func SegmentSyllables(sentence string) ([]string, error) {
 	sRunes := []rune(sentence)
 	return segment(sRunes)
 }
 
-// splitting a burmese sentence into each word
+// splitting a burmese sentence into each syllable,
+// Ignore spaces but include punctuation
 func segment(sRunes []rune) (words []string, err error) {
 	words = make([]string, 0, len(sRunes))
 	index := 0
